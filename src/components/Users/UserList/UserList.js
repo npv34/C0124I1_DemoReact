@@ -1,5 +1,5 @@
 import UserSearch from "../UserSearch/UserSearch";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Star from "./Star/Star";
 
 function UserList() {
@@ -39,11 +39,21 @@ function UserList() {
         }
     }
 
+    useEffect(() => {
+        console.log(users);
+    }, [users])
+
+    const changeStart = (indexUser, newStar) => {
+        users[indexUser].rate = newStar + 1;
+        setUsers([...users]);
+    }
+
     return (
         <>
             <div className="card mt-2">
                 <div className="card-header">
                     User List
+                    <UserSearch/>
                 </div>
                 <div className="card-body">
                     <table className="table">
@@ -59,13 +69,13 @@ function UserList() {
                         </thead>
                         <tbody>
                         {users.map((user,index) => (
-                            <tr key={index}>
+                            <tr key={"tr" + index}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>{user.dob}</td>
                                 <td>
-                                    <Star name="Luan" totalStar={user.rate}/>
+                                    <Star name="Luan" indexUser={index} totalStar={user.rate} ratingStar={changeStart}/>
                                 </td>
                                 <td>
                                     <button onClick={() => handleDelete(index)} className="btn btn-danger">Delete</button></td>

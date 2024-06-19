@@ -9,9 +9,6 @@ function UserSearch() {
 
     return (
         <>
-            <h1>User Search</h1>
-            Keyword: {keyword}
-            <br/>
             <input type="text" onChange={handleChange} />
         </>
     )
