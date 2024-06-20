@@ -1,6 +1,7 @@
 import UserSearch from "../UserSearch/UserSearch";
 import {useEffect, useState} from "react";
 import Star from "./Star/Star";
+import {Link} from "react-router-dom";
 
 function UserList() {
 
@@ -25,8 +26,17 @@ function UserList() {
             email: "teo.com",
             dob: "2000-01-01",
             rate: 2.5
+        },
+        {
+            id: 4,
+            name: "linh",
+            email: "linh.com",
+            dob: "2000-01-01",
+            rate: 2.5
         }
     ]);
+
+    const [listUsersFilter, setListUsersFilter] = useState(users);
 
     const handleDelete = (index) => {
         if (window.confirm("Are you sure you want to delete")) {
@@ -39,21 +49,41 @@ function UserList() {
         }
     }
 
-    useEffect(() => {
-        console.log(users);
-    }, [users])
 
     const changeStart = (indexUser, newStar) => {
         users[indexUser].rate = newStar + 1;
         setUsers([...users]);
     }
 
+    const handleSearch = (keyword) => {
+        //tim kiem user theo ten
+        let usersF = [];
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].name.toLowerCase().includes(keyword.toLowerCase())) {
+                usersF.push(users[i]);
+            }
+        }
+
+        // const userFilter = users.filter(item => item.name.toLowerCase().includes(keyword.toLowerCase()));
+        setListUsersFilter(usersF);
+    }
+
     return (
         <>
             <div className="card mt-2">
                 <div className="card-header">
-                    User List
-                    <UserSearch/>
+                    <div className="row">
+                        <div className="col"> User List
+                            <Link to={`/users/create`}>
+                                <button className="btn btn-primary">Add User</button>
+                            </Link>
+                        </div>
+                        <div className="col">
+                            <UserSearch search={handleSearch}/>
+                        </div>
+                    </div>
+
+
                 </div>
                 <div className="card-body">
                     <table className="table">
@@ -68,7 +98,7 @@ function UserList() {
                         </tr>
                         </thead>
                         <tbody>
-                        {users.map((user,index) => (
+                        {listUsersFilter.map((user,index) => (
                             <tr key={"tr" + index}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{user.name}</td>
@@ -78,7 +108,11 @@ function UserList() {
                                     <Star name="Luan" indexUser={index} totalStar={user.rate} ratingStar={changeStart}/>
                                 </td>
                                 <td>
-                                    <button onClick={() => handleDelete(index)} className="btn btn-danger">Delete</button></td>
+                                    <button onClick={() => handleDelete(index)} className="btn btn-danger">Delete</button>
+                                    <Link to={`/users/${user.id}/edit`}>
+                                        <button className={"btn btn-primary"}>Edit</button>
+                                    </Link>
+                                </td>
                             </tr>
                         ))}
                         </tbody>

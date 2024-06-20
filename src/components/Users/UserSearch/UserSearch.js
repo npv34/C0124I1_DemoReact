@@ -1,15 +1,14 @@
 import {useState} from "react";
 
-function UserSearch() {
-    const [keyword, setKeyword] = useState("");
+function UserSearch(props) {
 
-    const handleChange = (e) => {
-        setKeyword(e.target.value);
+    const handleChange = (evt) => {
+        props.search(evt.target.value);
     }
 
     return (
         <>
-            <input type="text" onChange={handleChange} />
+            <input className="form-control" type="text" onChange={handleChange} />
         </>
     )
 }
