@@ -17,6 +17,7 @@ function App() {
     return (
         <>
             <Routes>
+
                 <Route path={"/"} element={<Master/>} >
                     <Route path={"/users"} element={<UserList/>} />
                     <Route path={"/users/create"} element={<UserAdd/>} />

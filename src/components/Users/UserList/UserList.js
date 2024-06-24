@@ -2,50 +2,38 @@ import UserSearch from "../UserSearch/UserSearch";
 import {useEffect, useState} from "react";
 import Star from "./Star/Star";
 import {Link} from "react-router-dom";
+import UserService from "../../../services/user.service";
 
 function UserList() {
 
-    const [users, setUsers] = useState([
-        {
-            id: 1,
-            name: "Luan",
-            email: "luan.com",
-            dob: "2000-01-01",
-            rate: 4
-        },
-        {
-            id: 2,
-            name: "Quan",
-            email: "quan.com",
-            dob: "2000-01-01",
-            rate: 3
-        },
-        {
-            id: 3,
-            name: "Teo",
-            email: "teo.com",
-            dob: "2000-01-01",
-            rate: 2.5
-        },
-        {
-            id: 4,
-            name: "linh",
-            email: "linh.com",
-            dob: "2000-01-01",
-            rate: 2.5
-        }
-    ]);
+    const [users, setUsers] = useState([]);
+    const [reRender, setReRender] = useState(true);
+    const [showSpinner, setShowSpinner] = useState(true);
+
+    useEffect(() => {
+        //call api
+        UserService.getAllUsers()
+            .then(res => {
+                const data = res.data;
+                setUsers(data)
+                setListUsersFilter(data)
+                setShowSpinner(false)
+            })
+    }, [reRender])
 
     const [listUsersFilter, setListUsersFilter] = useState(users);
 
-    const handleDelete = (index) => {
+    const handleDelete = (id) => {
         if (window.confirm("Are you sure you want to delete")) {
-            // tao new array with destructing
-            const newUsers = [...users];
-            //xoa 1 phan tu mang moi
-            newUsers.splice(index, 1);
-            //set lai gia tri state -> component re-render
-            setUsers(newUsers);
+            setShowSpinner(true)
+            // call api delete
+            UserService.deleteUser(id)
+                .then(res => {
+                    console.log("Delete success")
+                    setReRender(!reRender);
+                    setShowSpinner(false)
+                })
+
         }
     }
 
@@ -86,10 +74,21 @@ function UserList() {
 
                 </div>
                 <div className="card-body">
+                    <div className="d-flex justify-content-center">
+                    { showSpinner && (
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    )}
+                    </div>
+
+
                     <table className="table">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col">User ID</th>
+
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Dob</th>
@@ -98,9 +97,10 @@ function UserList() {
                         </tr>
                         </thead>
                         <tbody>
-                        {listUsersFilter.map((user,index) => (
+                        {listUsersFilter.map((user, index) => (
                             <tr key={"tr" + index}>
                                 <th scope="row">{index + 1}</th>
+                                <th scope="row">{'UserID-' + user.id}</th>
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>{user.dob}</td>
@@ -108,7 +108,8 @@ function UserList() {
                                     <Star name="Luan" indexUser={index} totalStar={user.rate} ratingStar={changeStart}/>
                                 </td>
                                 <td>
-                                    <button onClick={() => handleDelete(index)} className="btn btn-danger">Delete</button>
+                                    <button onClick={() => handleDelete(user.id)} className="btn btn-danger">Delete
+                                    </button>
                                     <Link to={`/users/${user.id}/edit`}>
                                         <button className={"btn btn-primary"}>Edit</button>
                                     </Link>
