@@ -15,6 +15,7 @@ function UserList() {
         UserService.getAllUsers()
             .then(res => {
                 const data = res.data;
+                console.log(data)
                 setUsers(data)
                 setListUsersFilter(data)
                 setShowSpinner(false)
@@ -38,9 +39,11 @@ function UserList() {
     }
 
 
-    const changeStart = (indexUser, newStar) => {
-        users[indexUser].rate = newStar + 1;
-        setUsers([...users]);
+    const changeStart = (idUser, newStar) => {
+        UserService.changeStarUser(idUser, newStar).then(res => {
+            setReRender(!reRender);
+        })
+
     }
 
     const handleSearch = (keyword) => {
@@ -93,6 +96,7 @@ function UserList() {
                             <th scope="col">Email</th>
                             <th scope="col">Dob</th>
                             <th scope="col">Rate</th>
+                            <th scope="col">Role</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -105,8 +109,9 @@ function UserList() {
                                 <td>{user.email}</td>
                                 <td>{user.dob}</td>
                                 <td>
-                                    <Star name="Luan" indexUser={index} totalStar={user.rate} ratingStar={changeStart}/>
+                                    <Star name="Luan" idUser={user.id} indexUser={index} totalStar={user.rate} ratingStar={changeStart}/>
                                 </td>
+                                <td>{user.role.name}</td>
                                 <td>
                                     <button onClick={() => handleDelete(user.id)} className="btn btn-danger">Delete
                                     </button>

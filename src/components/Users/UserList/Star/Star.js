@@ -16,7 +16,6 @@ function Star(props) {
     }, []);
 
     useEffect(() => {
-        console.log('================================ Star Didmount')
     }, []);
 
     const handleHoverStar = (index) => {
@@ -27,7 +26,7 @@ function Star(props) {
             data.push(star);
         }
         setArrStar([...data]);
-        props.ratingStar(props.indexUser, index)
+        props.ratingStar(props.idUser, index)
     }
 
     return (

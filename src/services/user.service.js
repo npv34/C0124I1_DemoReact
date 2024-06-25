@@ -3,7 +3,7 @@ import {URL_API} from "../config/backend.config";
 
 class UserService {
     static async getAllUsers() {
-        return await axios.get(URL_API + '/users/')
+        return await axios.get(URL_API + '/users/?_expand=role')
     }
 
     static async deleteUser(id) {
@@ -20,6 +20,10 @@ class UserService {
 
     static async addUser(user) {
         return await axios.post(URL_API + '/users/', user)
+    }
+
+    static async changeStarUser(id, star){
+        return await axios.patch(URL_API + '/users/' + id, {rate: star})
     }
 }
 

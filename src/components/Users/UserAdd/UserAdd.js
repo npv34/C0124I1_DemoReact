@@ -19,10 +19,10 @@ function UserAdd() {
     // tao doi tuong formik
     const formAdd = useFormik({
         initialValues: {
-            id: "",
             name: "",
             dob: "",
-            rate: ""
+            rate: "",
+            roleId: ""
         },
         validationSchema: formAddValidate,
         onSubmit: (values) => {
@@ -63,8 +63,17 @@ function UserAdd() {
                        </div>
                        <div className="mb-3">
                            <label className="form-label">Rate</label>
-                           <input type="text" value={formAdd.values.rate} onChange={formAdd.handleChange} name="rate"
+                           <input type="number" max={10} min={0} value={formAdd.values.rate} onChange={formAdd.handleChange} name="rate"
                                   className="form-control"/>
+                       </div>
+                       <div className="mb-3">
+                           <label className="form-label">Role</label>
+                           <select name="roleId" onChange={formAdd.handleChange} value={formAdd.values.roleId}
+                                   className="form-select">
+                               <option value={1}>Admin</option>
+                               <option value={2}>User</option>
+                           </select>
+                           {formAdd.errors.roleId && <p className={"text-danger"}>{formAdd.errors.roleId}</p>}
                        </div>
 
                        <div className="mb-3">

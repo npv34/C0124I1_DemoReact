@@ -1,6 +1,23 @@
 import "./Header.css";
+import {Link, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {logout} from "../../redux/features/users/userSlice";
 
 function Header() {
+    const navigate = useNavigate();
+    const auth = useSelector(state => state.auth)
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log(auth)
+    }, [])
+
+    const logoutHandle = () => {
+        dispatch(logout())
+        navigate("/login")
+    }
+
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -28,12 +45,13 @@ function Header() {
                                     <li><a className="dropdown-item" href="#">View info</a></li>
                                     <li><a className="dropdown-item" href="#">Edit account</a></li>
                                     <li><a className="dropdown-item" href="#">Change password</a></li>
+                                    <li><button className="dropdown-item" onClick={logoutHandle}>Logout</button></li>
 
                                 </ul>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link disabled" href="#" tabIndex="-1"
-                                   aria-disabled="true">Disabled</a>
+                                   aria-disabled="true">Xin chao: {auth.userLogin.name} </a>
                             </li>
                         </ul>
                         <form className="d-flex">
