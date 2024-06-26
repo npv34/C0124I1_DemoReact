@@ -3,7 +3,7 @@ import {URL_API} from "../config/backend.config";
 
 class UserService {
     static async getAllUsers() {
-        return await axios.get(URL_API + '/users/?_expand=role')
+        return await axios.get(URL_API + '/users')
     }
 
     static async deleteUser(id) {

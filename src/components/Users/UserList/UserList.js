@@ -96,7 +96,7 @@ function UserList() {
                             <th scope="col">Email</th>
                             <th scope="col">Dob</th>
                             <th scope="col">Rate</th>
-                            <th scope="col">Role</th>
+
                             <th></th>
                         </tr>
                         </thead>
@@ -111,7 +111,7 @@ function UserList() {
                                 <td>
                                     <Star name="Luan" idUser={user.id} indexUser={index} totalStar={user.rate} ratingStar={changeStart}/>
                                 </td>
-                                <td>{user.role.name}</td>
+
                                 <td>
                                     <button onClick={() => handleDelete(user.id)} className="btn btn-danger">Delete
                                     </button>
