@@ -18,13 +18,13 @@ function App() {
             <Routes>
                 <Route path={"/login"} element={<Login/>} />
                 <Route path={"/register"} element={<Register/>} />
-                { auth.isLogin && (
+                {/*{ auth.isLogin && (*/}
                     <Route path={"/"} element={<Master/>} >
                         <Route path={"/users"} element={<UserList/>} />
                         <Route path={"/users/create"} element={<UserAdd/>} />
                         <Route path={"/users/:id/edit"} element={<UserEdit/>} />
                     </Route>
-                )}
+                {/*)}*/}
             </Routes>
         </>
     );
